@@ -1,33 +1,21 @@
+/*
+Traveling Salesman Problem Solver By Tomasz Grochowski.
+*/
+
+
 #include "Test.h"
 
 using namespace std;
 
 int finalCost = INT32_MAX;
 
+/// <summary>
+/// Main menu of the application
+/// </summary>
+/// <returns></returns>
 int main()
 {
-    //srand(time(NULL));
-
-    //vector<unsigned> finalPath;
-    //int finalCost = INT32_MAX;
-
-    //Graph graph;
-    //graph.readFromFile();
-
-    //graph.SimulatedAnnealing(finalCost, finalPath, 1);
-    //graph.tabuSearch(finalCost, finalPath);
-    //finalPath = graph.greedyAlgorithm();
-    //cout << "greedy = " << finalPath.size() << endl;
-    //finalPath = graph.hybridAlgorithm();
-    //cout << "hybrid = " << finalPath.size() << endl;
-
-    //cout << finalCost << endl;
-    //for (unsigned u : finalPath)
-    //{
-    //    cout << u << " - " << flush;
-    //}
-    //cout << endl;
-
+    srand(time(NULL));
 
     bool running = true;
     cout << "Traveling Salesman Problem\n" << endl;

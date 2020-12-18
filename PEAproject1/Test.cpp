@@ -1,8 +1,15 @@
+/*
+* Traveling Salesman Problem Solver By Tomasz Grochowski.
+*/
+
+
 #include "Test.h"
 
-int Test::amount[7]{ 4, 6, 8, 10, 12, 14, 16 }; //7 different amounts of cities to test algorithms for
+int Test::amount[7]{ 4, 6, 8, 10, 12, 14, 16 };
 
-void Test::tspFromFile() //Interface for testing correctness of algorithms
+using namespace std;
+
+void Test::tspFromFile()
 {
 	while (1)
 	{
@@ -10,10 +17,9 @@ void Test::tspFromFile() //Interface for testing correctness of algorithms
 		cout << "Which algorithm you want to test?\n"
 			<< "1 - Brute Force\n"
 			<< "2 - Dynamic Programming\n"
-			<< "3 - Branch and Bound method 1\n"
-			<< "4 - Branch and Bound method 2\n"
-			<< "5 - Simulated annealing\n"
-			<< "6 - Tabu search\n"
+			<< "3 - Branch and Bound\n"
+			<< "4 - Simulated annealing\n"
+			<< "5 - Tabu search\n"
 			<< "0 - Go back\n" << endl;
 
 		int choice;
@@ -27,29 +33,131 @@ void Test::tspFromFile() //Interface for testing correctness of algorithms
 		switch (choice)
 		{
 		case 1:
+		{
 			graph.readFromFile();
-			graph.bruteForce(finalCost, finalPath);
+
+			BruteForce bruteForce(graph.getNodeAmount(), graph.getMatrix());
+			bruteForce.run(finalCost, finalPath);
 			break;
+		}
 		case 2:
+		{
 			graph.readFromFile();
-			graph.DPalgorithm(finalCost, finalPath);
+
+			DynamicProgramming dynamicProgramming(graph.getNodeAmount(), graph.getMatrix());
+			dynamicProgramming.run(finalCost, finalPath);
 			break;
+		}
 		case 3:
+		{
 			graph.readFromFile();
-			graph.BBAlgorithm(finalCost, finalPath);
+
+			BranchAndBound branchAndBound(graph.getNodeAmount(), graph.getMatrix());
+			branchAndBound.run(finalCost, finalPath);
 			break;
+		}
 		case 4:
+		{
 			graph.readFromFile();
-			graph.BBAlgorithm2(finalCost, finalPath);
+
+			bool choosing = true;
+			while (choosing)
+			{
+				cout << endl;
+				cout << "Choose a neighbourhood generating method.\n"
+					<< "1 - Swap\n"
+					<< "2 - Reverse\n"
+					<< "3 - Insert\n" << endl;
+
+				int neighbourhoodChoice;
+				cin >> neighbourhoodChoice;
+
+				switch (neighbourhoodChoice)
+				{
+				case 1:
+				{
+					SimulatedAnnealing simulatedAnnealing(graph.getNodeAmount(), graph.getMatrix(), &NeighbourHoodFinder::neighbourhoodBySwap);
+					choosing = false;
+
+					simulatedAnnealing.run(finalCost, finalPath);
+					break;
+				}
+				case 2:
+				{
+					SimulatedAnnealing simulatedAnnealing(graph.getNodeAmount(), graph.getMatrix(), &NeighbourHoodFinder::neighbourhoodByReverse);
+					choosing = false;
+
+					simulatedAnnealing.run(finalCost, finalPath);
+					break;
+				}
+				case 3:
+				{
+					SimulatedAnnealing simulatedAnnealing(graph.getNodeAmount(), graph.getMatrix(), &NeighbourHoodFinder::neighbourhoodByInsert);
+					choosing = false;
+
+					simulatedAnnealing.run(finalCost, finalPath);
+					break;
+				}
+				default:
+				{
+					cout << "Choose one of available options!" << endl;
+					break;
+				}
+				}
+			}
 			break;
+		}
 		case 5:
+		{
 			graph.readFromFile();
-			graph.BBAlgorithm2(finalCost, finalPath);
+
+			bool choosing = true;
+			while (choosing)
+			{
+				cout << endl;
+				cout << "Choose a neighbourhood generating method.\n"
+					<< "1 - Swap\n"
+					<< "2 - Reverse\n"
+					<< "3 - Insert\n" << endl;
+
+				int neighbourhoodChoice;
+				cin >> neighbourhoodChoice;
+
+				switch (neighbourhoodChoice)
+				{
+				case 1:
+				{
+					TabuSearch tabuSearch(graph.getNodeAmount(), graph.getMatrix(), &NeighbourHoodFinder::neighbourhoodBySwap);
+					choosing = false;
+
+					tabuSearch.run(finalCost, finalPath);
+					break;
+				}
+				case 2:
+				{
+					TabuSearch tabuSearch(graph.getNodeAmount(), graph.getMatrix(), &NeighbourHoodFinder::neighbourhoodByReverse);
+					choosing = false;
+
+					tabuSearch.run(finalCost, finalPath);
+					break;
+				}
+				case 3:
+				{
+					TabuSearch tabuSearch(graph.getNodeAmount(), graph.getMatrix(), &NeighbourHoodFinder::neighbourhoodByInsert);
+					choosing = false;
+
+					tabuSearch.run(finalCost, finalPath);
+					break;
+				}
+				default:
+				{
+					cout << "Choose one of available options!" << endl;
+					break;
+				}
+				}
+			}
 			break;
-		case 6:
-			graph.readFromFile();
-			graph.BBAlgorithm2(finalCost, finalPath);
-			break;
+		}
 		case 0:
 			return;
 		default:
@@ -68,7 +176,7 @@ void Test::tspFromFile() //Interface for testing correctness of algorithms
 	return;
 }
 
-void Test::tspGenerated() //Interface for automatic tests
+void Test::tspGenerated()
 {
 	while (1)
 	{
@@ -76,8 +184,7 @@ void Test::tspGenerated() //Interface for automatic tests
 		cout << "Which algorithm you want to test?\n"
 			<< "1 - Brute Force\n"
 			<< "2 - Dynamic Programming\n"
-			<< "3 - Branch and Bound method 1\n"
-			<< "4 - Branch and Bound method 2\n"
+			<< "3 - Branch and Bound\n"
 			<< "0 - Go back\n" << endl;
 
 		int choice;
@@ -94,9 +201,6 @@ void Test::tspGenerated() //Interface for automatic tests
 		case 3:
 			generateAndTest(choice);
 			break;
-		case 4:
-			generateAndTest(choice);
-			break;
 		case 0:
 			return;
 		default:
@@ -107,7 +211,7 @@ void Test::tspGenerated() //Interface for automatic tests
 	return;
 }
 
-void Test::generateAndTest(int chosenMethod) //Function responsible for automatic tests
+void Test::generateAndTest(int chosenMethod)
 {
 	Timer timer;
 	string fileName;
@@ -119,8 +223,9 @@ void Test::generateAndTest(int chosenMethod) //Function responsible for automati
 	{
 		if (chosenMethod == 1)
 		{
-			for (int i = 0; i < 7; i++) //Tests are made automaticly 100 times for every of 7 different amounts and results are saved in file
+			for (int i = 0; i < 7; i++)
 			{
+
 				saveFile << "NUMBER OF CITIES: " << amount[i] << endl;
 				for (int j = 0; j < 100; j++)
 				{
@@ -130,8 +235,10 @@ void Test::generateAndTest(int chosenMethod) //Function responsible for automati
 					vector<unsigned> path;
 					int cost = INT32_MAX;
 
+					BruteForce bruteForce(graph.getNodeAmount(), graph.getMatrix());
+
 					timer.timerStart();
-					graph.bruteForce(cost, path);
+					bruteForce.run(cost, path);
 					timer.timerStop();
 
 					saveFile << timer.elapsedTime() << endl;
@@ -152,8 +259,10 @@ void Test::generateAndTest(int chosenMethod) //Function responsible for automati
 					vector<unsigned> path;
 					int cost = INT32_MAX;
 
+					DynamicProgramming dynamicProgramming(graph.getNodeAmount(), graph.getMatrix());
+
 					timer.timerStart();
-					graph.DPalgorithm(cost, path);
+					dynamicProgramming.run(cost, path);
 					timer.timerStop();
 
 					saveFile << timer.elapsedTime() << endl;
@@ -174,30 +283,10 @@ void Test::generateAndTest(int chosenMethod) //Function responsible for automati
 					vector<unsigned> path;
 					int cost = INT32_MAX;
 
-					timer.timerStart();
-					graph.BBAlgorithm(cost, path);
-					timer.timerStop();
-
-					saveFile << timer.elapsedTime() << endl;
-				}
-				saveFile << endl;
-			}
-		}
-		if (chosenMethod == 4)
-		{
-			for (int i = 0; i < 7; i++)
-			{
-				saveFile << "NUMBER OF CITIES: " << amount[i] << endl;
-				for (int j = 0; j < 100; j++)
-				{
-					Graph graph;
-					graph.generate(Test::amount[i]);
-
-					vector<unsigned> path;
-					int cost = INT32_MAX;
+					BranchAndBound branchAndBound(graph.getNodeAmount(), graph.getMatrix());
 
 					timer.timerStart();
-					graph.BBAlgorithm2(cost, path);
+					branchAndBound.run(cost, path);
 					timer.timerStop();
 
 					saveFile << timer.elapsedTime() << endl;
