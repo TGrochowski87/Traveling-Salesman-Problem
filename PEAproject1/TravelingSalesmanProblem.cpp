@@ -7,7 +7,6 @@ Traveling Salesman Problem Solver By Tomasz Grochowski.
 
 using namespace std;
 
-int finalCost = INT32_MAX;
 
 /// <summary>
 /// Main menu of the application
@@ -16,6 +15,23 @@ int finalCost = INT32_MAX;
 int main()
 {
     srand(time(NULL));
+
+    //int finalCost = INT32_MAX;
+    //std::vector<unsigned> finalPath;
+
+    //Graph graph;
+    //graph.readFromFile();
+
+    //GeneticAlgorithm geneticAlgorithm(graph.getNodeAmount(), graph.getMatrix(), 1000, 0, 0);
+    //geneticAlgorithm.run(finalCost, finalPath);
+
+    //cout << "cost = " << finalCost << endl;
+    //cout << endl;
+    //for (unsigned u : finalPath)
+    //{
+    //    cout << u << " - " << flush;
+    //}
+    //cout << endl;
 
     bool running = true;
     cout << "Traveling Salesman Problem\n" << endl;

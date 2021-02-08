@@ -20,6 +20,7 @@ void Test::tspFromFile()
 			<< "3 - Branch and Bound\n"
 			<< "4 - Simulated annealing\n"
 			<< "5 - Tabu search\n"
+			<< "6 - Genetic\n"
 			<< "0 - Go back\n" << endl;
 
 		int choice;
@@ -155,6 +156,40 @@ void Test::tspFromFile()
 					break;
 				}
 				}
+			}
+			break;
+		}
+		case 6:
+		{
+			graph.readFromFile();
+
+			while (1)
+			{
+				cout << endl;
+				cout << "Choose a crossover method:\n"
+					<< "1 - PMX\n"
+					<< "2 - OX\n"
+					<< "Mutation method:\n"
+					<< "1 - Invert\n"
+					<< "2 - Scramble\n"
+					<< "And type in desired population size.\n"
+					<< "Seperated by space.\n"
+					<< endl;
+
+				int availableChoices[2]{1, 2};
+
+				int crossoverChoice, mutationChoice, populationSize;
+				cin >> crossoverChoice >> mutationChoice >> populationSize;
+
+				if ((crossoverChoice != 1 && crossoverChoice != 2) || (mutationChoice != 1 && mutationChoice != 2))
+				{
+					cout << "Choose one of available options!" << endl;
+					continue;
+				}
+
+				GeneticAlgorithm geneticAlgorithm(graph.getNodeAmount(), graph.getMatrix(), populationSize, crossoverChoice, mutationChoice);
+				geneticAlgorithm.run(finalCost, finalPath);
+				break;
 			}
 			break;
 		}

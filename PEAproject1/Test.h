@@ -10,6 +10,7 @@
 #include "DynamicProgramming.h"
 #include "SimulatedAnnealing.h"
 #include "TabuSearch.h"
+#include "GeneticAlgorithm.h"
 #include "Timer.h"
 
 /// <summary>
